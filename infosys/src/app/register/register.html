@@ -1,0 +1,185 @@
+<div class="register-wrapper" [ngClass]="{'light-theme': !isDarkTheme, 'dark-theme': isDarkTheme}">
+  <div class="register-card">
+
+  
+    <div class="card-accent"></div>
+
+    <div class="theme-toggle" (click)="toggleTheme()" [title]="isDarkTheme ? 'Switch to Light' : 'Switch to Dark'">
+      <span>{{ isDarkTheme ? '☀️' : '🌙' }}</span>
+      <span class="toggle-label">{{ isDarkTheme ? 'Light' : 'Dark' }}</span>
+    </div>
+
+    <div class="register-header">
+      <div class="logo-wrapper">
+        <span class="logo-icon">🎓</span>
+      </div>
+      <h2>Create Account</h2>
+      <p class="subtitle">Join CampusFlow today</p>
+    </div>
+
+    <div class="role-tabs">
+      <button class="role-tab" [class.active]="selectedRole === 'student'" (click)="selectedRole = 'student'">
+        <span class="role-icon">👨‍🎓</span>
+        <span>Student</span>
+      </button>
+      <button class="role-tab" [class.active]="selectedRole === 'admin'" (click)="selectedRole = 'admin'">
+        <span class="role-icon">👨‍💼</span>
+        <span>Admin</span>
+      </button>
+      <div class="active-tab-indicator" [style.transform]="getIndicatorPosition()"></div>
+    </div>
+
+    <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+      <div class="form-grid">
+
+        <div class="input-group" [class.full-width]="selectedRole === 'admin'">
+          <label for="fullName">Full Name</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" id="fullName" name="fullName" [(ngModel)]="registerData.fullName" #fullName="ngModel"
+              placeholder="Enter your full name" required>
+          </div>
+          <div class="error-message" *ngIf="fullName.invalid && fullName.touched">Full name is required</div>
+        </div>
+
+        <div class="input-group" *ngIf="selectedRole === 'student'">
+          <label for="regNumber">Registration No.</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🆔</span>
+            <input type="text" id="regNumber" name="regNumber" [(ngModel)]="registerData.regNumber" #regNumber="ngModel"
+              placeholder="e.g., CS2021001" [required]="selectedRole === 'student'">
+          </div>
+          <div class="error-message" *ngIf="regNumber.invalid && regNumber.touched">Registration number is required
+          </div>
+        </div>
+
+    
+        <div class="input-group full-width">
+          <label for="email">Email Address</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📧</span>
+            <input type="email" id="email" name="email" [(ngModel)]="registerData.email" #email="ngModel"
+              placeholder="your.name@college.edu" required email>
+          </div>
+          <div class="error-message" *ngIf="email.invalid && email.touched">
+            <span *ngIf="email.errors?.['required']">Email is required</span>
+            <span *ngIf="email.errors?.['email']">Please enter a valid email</span>
+          </div>
+        </div>
+
+        <div class="input-group full-width">
+          <label for="college">College / University</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🏛️</span>
+            <input type="text" id="college" name="college" [(ngModel)]="registerData.college" #college="ngModel"
+              placeholder="Enter your institution name" required>
+          </div>
+          <div class="error-message" *ngIf="college.invalid && college.touched">College name is required</div>
+        </div>
+
+        <div class="input-group" *ngIf="selectedRole === 'student'">
+          <label for="department">Department</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📚</span>
+            <select id="department" name="department" [(ngModel)]="registerData.department" #department="ngModel"
+              required>
+              <option value="" disabled selected>Select department</option>
+              <option value="cse">Computer Science</option>
+              <option value="it">Information Technology</option>
+              <option value="ece">Electronics</option>
+              <option value="mech">Mechanical</option>
+              <option value="civil">Civil</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group" *ngIf="selectedRole === 'admin'">
+          <label for="adminRole">Admin Role</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👑</span>
+            <select id="adminRole" name="adminRole" [(ngModel)]="registerData.adminRole" #adminRole="ngModel" required>
+              <option value="" disabled selected>Select role</option>
+              <option value="super">Super Admin</option>
+              <option value="event">Event Coordinator</option>
+              <option value="department">Department Admin</option>
+              <option value="faculty">Faculty Admin</option>
+            </select>
+          </div>
+        </div>
+
+      
+        <div class="input-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="password" name="password" [(ngModel)]="registerData.password" #password="ngModel"
+              placeholder="Create password" required minlength="8">
+          </div>
+          <div class="error-message" *ngIf="password.invalid && password.touched">
+            <span *ngIf="password.errors?.['required']">Password is required</span>
+            <span *ngIf="password.errors?.['minlength']">Minimum 8 characters</span>
+          </div>
+        </div>
+
+    
+        <div class="input-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✓</span>
+            <input type="password" id="confirmPassword" name="confirmPassword"
+              [(ngModel)]="registerData.confirmPassword" #confirmPassword="ngModel" placeholder="Repeat password"
+              required (input)="checkPasswordMatch()">
+          </div>
+          <div class="error-message" *ngIf="confirmPassword.touched && !passwordsMatch">Passwords do not match</div>
+        </div>
+
+        <div class="input-group full-width" *ngIf="selectedRole === 'admin'">
+          <label for="adminKey">Admin Access Key</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔑</span>
+            <input type="password" id="adminKey" name="adminKey" [(ngModel)]="registerData.adminKey" #adminKey="ngModel"
+              placeholder="Enter admin access key" [required]="selectedRole === 'admin'">
+          </div>
+          <div class="info-text">Contact college administration for access key</div>
+        </div>
+
+      </div>
+
+    
+      <div class="terms-group">
+        <label class="checkbox-container">
+          <input type="checkbox" name="acceptTerms" [(ngModel)]="registerData.acceptTerms" #acceptTerms="ngModel"
+            required>
+          <span class="checkmark"></span>
+          <span class="terms-text">
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          </span>
+        </label>
+        <div class="error-message" *ngIf="acceptTerms.invalid && acceptTerms.touched">You must accept the terms</div>
+      </div>
+
+      <button type="submit" class="register-btn" [class.student-btn]="selectedRole === 'student'"
+        [class.admin-btn]="selectedRole === 'admin'" [disabled]="registerForm.invalid || !passwordsMatch">
+        <span>Create {{selectedRole === 'student' ? 'Student' : 'Admin'}} Account</span>
+      </button>
+
+      <div class="divider"><span>or sign up with</span></div>
+
+      <div class="social-options">
+        <button type="button" class="social-btn reg-social-btn" (click)="socialSignup('college')">
+          <span>🎓</span> College ID
+        </button>
+        <button type="button" class="social-btn reg-social-btn" (click)="socialSignup('google')">
+          <span>📧</span> Google
+        </button>
+      </div>
+
+
+      <div class="login-prompt">
+        <span>Already have an account?</span>
+        <a routerLink="/">Sign In</a>
+      </div>
+    </form>
+  </div>
+</div>
