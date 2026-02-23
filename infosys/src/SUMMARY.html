@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CampusEventHub — Frontend Summary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 40px 20px;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .tagline {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 40px;
+        }
+
+        /* Section cards */
+        .section {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 28px 32px;
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-blue {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+        }
+
+        .badge-purple {
+            background: rgba(139, 92, 246, 0.2);
+            color: #c4b5fd;
+        }
+
+        .badge-green {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        .badge-red {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .badge-yellow {
+            background: rgba(234, 179, 8, 0.2);
+            color: #fde68a;
+        }
+
+        /* File tree */
+        .file-tree {
+            background: #0b1120;
+            border: 1px solid #1e293b;
+            border-radius: 10px;
+            padding: 18px 22px;
+            font-family: monospace;
+            font-size: 0.88rem;
+            line-height: 2;
+        }
+
+        .file-tree .folder {
+            color: #60a5fa;
+            font-weight: 700;
+        }
+
+        .file-tree .file-html {
+            color: #f97316;
+        }
+
+        .file-tree .file-css {
+            color: #a78bfa;
+        }
+
+        .file-tree .file-ts {
+            color: #34d399;
+        }
+
+        .file-tree .note {
+            color: #475569;
+            font-style: italic;
+        }
+
+        .file-tree .indent {
+            margin-left: 22px;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: rgba(59, 130, 246, 0.15);
+            color: #93c5fd;
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 11px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Code box */
+        .code {
+            background: #0b1120;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #7dd3fc;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+
+        .highlight {
+            color: #fb923c;
+        }
+
+        .highlight-green {
+            color: #4ade80;
+        }
+
+        .highlight-purple {
+            color: #c084fc;
+        }
+
+        /* Flow arrows */
+        .flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 0.88rem;
+        }
+
+        .flow-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 8px;
+            padding: 7px 14px;
+            color: #93c5fd;
+            font-weight: 600;
+        }
+
+        .flow-arrow {
+            color: #475569;
+            font-size: 1.1rem;
+        }
+
+        .tip {
+            background: rgba(234, 179, 8, 0.08);
+            border-left: 3px solid #eab308;
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.88rem;
+            color: #fde68a;
+            margin-top: 14px;
+        }
+
+        .api-row {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .method {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .post {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+        }
+
+        .get {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+        }
+
+        .api-path {
+            font-family: monospace;
+            font-size: 0.88rem;
+            color: #7dd3fc;
+        }
+
+        .api-desc {
+            font-size: 0.85rem;
+            color: #94a3b8;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #1e293b;
+            margin: 10px 0 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>🎓 CampusEventHub — Frontend Summary</h1>
+        <p class="tagline">Yeh file backend developer ke liye likhi gayi hai. Isme login aur register page ke saare
+            files, unka kaam aur backend connection points explain kiye gaye hain.</p>
+
+        <!-- FILE STRUCTURE -->
+        <div class="section">
+            <div class="section-title">📁 Project File Structure <span class="badge badge-blue">Angular 17+</span></div>
+            <div class="file-tree">
+                <span class="folder">src/</span>
+                <div class="indent">
+                    <span class="folder">app/</span>
+                    <div class="indent">
+                        <span class="folder">login/</span>
+                        <div class="indent">
+                            <span class="file-html">login.html</span> <span class="note">← UI template (form fields,
+                                buttons)</span><br>
+                            <span class="file-css">login.css</span> <span class="note">← Sirf login ka styling
+                                (dark/light theme)</span><br>
+                            <span class="file-ts">login.ts</span> <span class="note">← Component logic (toggleTheme,
+                                isDarkTheme)</span><br>
+                            <span class="file-ts">login.spec.ts</span> <span class="note">← Unit tests (abhi
+                                khaali)</span>
+                        </div>
+                        <br>
+                        <span class="folder">register/</span>
+                        <div class="indent">
+                            <span class="file-html">register.html</span> <span class="note">← Registration form (ngModel
+                                binding)</span><br>
+                            <span class="file-css">register.css</span> <span class="note">← Sirf register ka
+                                styling</span><br>
+                            <span class="file-ts">register.ts</span> <span class="note">← Form data, validation, submit
+                                logic</span>
+                        </div>
+                    </div>
+                    <br>
+                    <span class="folder">styles.css</span> <span class="note">← Global CSS (body, button, input base
+                        styles)</span><br>
+                    <span class="folder">index.html</span> <span class="note">← Root HTML (Angular app ka entry
+                        point)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOGIN PAGE -->
+        <div class="section">
+            <div class="section-title">🔐 Login Page <span class="badge badge-blue">login/login.html</span></div>
+
+            <p style="color:#94a3b8; margin-bottom:16px;">Login page abhi <strong style="color:#fca5a5;">Angular form
+                    binding use nahi kar raha</strong> — inputs plain HTML hain, koi <code
+                    style="color:#7dd3fc;">ngModel</code> nahi hai. Backend connect karne ke liye yeh changes zaruri
+                hain:</p>
+
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>HTML Element</th>
+                    <th>ID</th>
+                    <th>Backend ke liye kya chahiye</th>
+                </tr>
+                <tr>
+                    <td>Role</td>
+                    <td><code>&lt;select&gt;</code></td>
+                    <td><code>role</code></td>
+                    <td>Student ya Admin distinguish karne ke liye — API endpoint alag ho sakti hai</td>
+                </tr>
+                <tr>
+                    <td>Registration Number</td>
+                    <td><code>&lt;input type="text"&gt;</code></td>
+                    <td><code>reg-number</code></td>
+                    <td>Username/identifier — backend pe unique hona chahiye</td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><code>&lt;input type="password"&gt;</code></td>
+                    <td><code>lc-password</code></td>
+                    <td>Bcrypt hash ho ke DB me store karo, plain text kabhi nahi</td>
+                </tr>
+                <tr>
+                    <td>Sign In Button</td>
+                    <td><code>&lt;button&gt;</code></td>
+                    <td>class: <code>lc-login-btn</code></td>
+                    <td><strong style="color:#fca5a5;">Abhi hardcoded Facebook redirect hai — hata ke API call
+                            lagao</strong></td>
+                </tr>
+            </table>
+
+            <div class="tip">
+                ⚠️ <strong>Important:</strong> Login button me abhi
+                <code>onclick="window.location.href='https://www.facebook.com'"</code> hai — yeh hata ke Angular ka
+                <code>(click)="onLogin()"</code> lagao aur <code>login.ts</code> me HTTP call karo.
+            </div>
+
+            <div style="margin-top:16px;">
+                <div style="color:#94a3b8; font-size:0.88rem; margin-bottom:8px;">Suggested API call (login.ts me add
+                    karo):</div>
+                <div class="code"><span class="highlight-green">POST</span> <span
+                        class="highlight">/api/auth/login</span>
+                    Body: {
+                    regNumber: <span class="highlight-purple">"CS2021001"</span>,
+                    password: <span class="highlight-purple">"user_password"</span>,
+                    role: <span class="highlight-purple">"student" | "admin"</span>
+                    }
+                    Response: {
+                    token: <span class="highlight-purple">"JWT_TOKEN"</span>,
+                    user: { name, role, college }
+                    }</div>
+            </div>
+
+            <div class="flow" style="margin-top:16px;">
+                <div class="flow-box">User fills form</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">onLogin() in login.ts</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">POST /api/auth/login</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">Save JWT in localStorage</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">router.navigate(['/dashboard'])</div>
+            </div>
+        </div>
+
+        <!-- REGISTER PAGE -->
+        <div class="section">
+            <div class="section-title">📝 Register Page <span class="badge badge-purple">register/register.html</span>
+            </div>
+
+            <p style="color:#94a3b8; margin-bottom:16px;">Register page <strong style="color:#86efac;">puri tarah
+                    Angular reactive form ke saath connected hai</strong> — <code style="color:#7dd3fc;">ngModel</code>,
+                validation aur submit handler sab kuch ready hai.</p>
+
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>ngModel binding</th>
+                    <th>Validation</th>
+                    <th>Sirf kab dikhta hai</th>
+                </tr>
+                <tr>
+                    <td>Full Name</td>
+                    <td><code>registerData.fullName</code></td>
+                    <td>required</td>
+                    <td>Dono roles (student + admin)</td>
+                </tr>
+                <tr>
+                    <td>Registration No.</td>
+                    <td><code>registerData.regNumber</code></td>
+                    <td>required (student only)</td>
+                    <td>Sirf Student tab me</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><code>registerData.email</code></td>
+                    <td>required, email format</td>
+                    <td>Dono roles</td>
+                </tr>
+                <tr>
+                    <td>College</td>
+                    <td><code>registerData.college</code></td>
+                    <td>required</td>
+                    <td>Dono roles</td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td><code>registerData.department</code></td>
+                    <td>required (student only)</td>
+                    <td>Sirf Student tab me</td>
+                </tr>
+                <tr>
+                    <td>Admin Role</td>
+                    <td><code>registerData.adminRole</code></td>
+                    <td>required (admin only)</td>
+                    <td>Sirf Admin tab me</td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><code>registerData.password</code></td>
+                    <td>required, minlength 8</td>
+                    <td>Dono roles</td>
+                </tr>
+                <tr>
+                    <td>Confirm Password</td>
+                    <td><code>registerData.confirmPassword</code></td>
+                    <td>Custom match check</td>
+                    <td>Dono roles</td>
+                </tr>
+                <tr>
+                    <td>Admin Key</td>
+                    <td><code>registerData.adminKey</code></td>
+                    <td>required (admin only)</td>
+                    <td>Sirf Admin tab me</td>
+                </tr>
+                <tr>
+                    <td>Accept Terms</td>
+                    <td><code>registerData.acceptTerms</code></td>
+                    <td>required (checkbox)</td>
+                    <td>Dono roles</td>
+                </tr>
+            </table>
+
+            <div style="margin-top:16px;">
+                <div style="color:#94a3b8; font-size:0.88rem; margin-bottom:8px;">register.ts ka
+                    <code>onRegister()</code> abhi Facebook pe redirect karta hai — isko replace karo:</div>
+                <div class="code"><span class="highlight-green">POST</span> <span
+                        class="highlight">/api/auth/register</span>
+                    Body: {
+                    fullName: <span class="highlight-purple">"John Doe"</span>,
+                    regNumber: <span class="highlight-purple">"CS2021001"</span>, <span class="note">// only if role ===
+                        'student'</span>
+                    email: <span class="highlight-purple">"john@college.edu"</span>,
+                    college: <span class="highlight-purple">"ABC University"</span>,
+                    department: <span class="highlight-purple">"cse"</span>, <span class="note">// only if role ===
+                        'student'</span>
+                    adminRole: <span class="highlight-purple">"event"</span>, <span class="note">// only if role ===
+                        'admin'</span>
+                    password: <span class="highlight-purple">"hashed_password"</span>,
+                    adminKey: <span class="highlight-purple">"SECRET_KEY"</span>, <span class="note">// only if role ===
+                        'admin'</span>
+                    role: <span class="highlight-purple">"student" | "admin"</span>
+                    }</div>
+            </div>
+
+            <div class="flow" style="margin-top:16px;">
+                <div class="flow-box">Form fill + validate</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">onRegister() fires</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">POST /api/auth/register</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">Success → router.navigate(['/login'])</div>
+            </div>
+        </div>
+
+        <!-- FILE CONNECTIONS -->
+        <div class="section">
+            <div class="section-title">🔗 Files ka Aapas ka Connection</div>
+            <table>
+                <tr>
+                    <th>File</th>
+                    <th>Kya karta hai</th>
+                    <th>Kisse connected hai</th>
+                </tr>
+                <tr>
+                    <td><code>login.html</code></td>
+                    <td>Login form ki UI — inputs, buttons, theme toggle</td>
+                    <td><code>login.ts</code> (toggleTheme), <code>login.css</code> (styling), <code>styles.css</code>
+                        (global)</td>
+                </tr>
+                <tr>
+                    <td><code>login.ts</code></td>
+                    <td>Component logic — theme toggle, isDarkTheme state</td>
+                    <td><code>login.html</code> ke saath bind hota hai, body pe dark/light class lagata hai</td>
+                </tr>
+                <tr>
+                    <td><code>login.css</code></td>
+                    <td>Sirf login card ki styling — dark/light theme, animations</td>
+                    <td>Sirf <code>login.html</code> pe apply hota hai (component-scoped)</td>
+                </tr>
+                <tr>
+                    <td><code>register.html</code></td>
+                    <td>Registration form — ngModel fields, role tabs, validation messages</td>
+                    <td><code>register.ts</code> (registerData object, onRegister, toggleTheme),
+                        <code>register.css</code></td>
+                </tr>
+                <tr>
+                    <td><code>register.ts</code></td>
+                    <td>Form data object, password match check, socialSignup, onRegister</td>
+                    <td><code>register.html</code> ke saare ngModel bindings yahan se aate hain</td>
+                </tr>
+                <tr>
+                    <td><code>register.css</code></td>
+                    <td>Register card styling — 2-column grid, role tabs, checkboxes</td>
+                    <td>Sirf <code>register.html</code> pe apply hota hai</td>
+                </tr>
+                <tr>
+                    <td><code>styles.css</code></td>
+                    <td>Global base styles — body background, button, input defaults</td>
+                    <td>Poori app pe apply hota hai. Isme <code>body.body-dark</code> / <code>body.body-light</code>
+                        classes hain jo theme toggle pe add hoti hain</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- THEME SYSTEM -->
+        <div class="section">
+            <div class="section-title">🌓 Theme System kaise kaam karta hai <span class="badge badge-yellow">Dark /
+                    Light</span></div>
+
+            <div class="flow">
+                <div class="flow-box">User clicks toggle</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">toggleTheme() in .ts file</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">isDarkTheme flip hota hai</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">body pe body-dark / body-light class</div>
+                <span class="flow-arrow">→</span>
+                <div class="flow-box">wrapper pe dark-theme / light-theme class</div>
+            </div>
+
+            <div class="code" style="margin-top:16px;"><span class="note">// HTML me ngClass:</span>
+                &lt;div class="login-wrapper" [ngClass]="{'dark-theme': isDarkTheme, 'light-theme': !isDarkTheme}"&gt;
+
+                <span class="note">// CSS me har element ka dark/light version alag likha hai:</span>
+                <span class="highlight">.login-wrapper.dark-theme</span> .login-card { background:
+                rgba(255,255,255,0.05); }
+                <span class="highlight">.login-wrapper.light-theme</span> .login-card { background:
+                rgba(255,255,255,0.93); }
+
+                <span class="note">// Body background ke liye styles.css me:</span>
+                <span class="highlight">body.body-dark</span> { background: linear-gradient(145deg, #0B1120 ...); }
+                <span class="highlight">body.body-light</span> { background: linear-gradient(145deg, #f0f4fa ...); }
+            </div>
+        </div>
+
+        <!-- BACKEND TODO LIST -->
+        <div class="section">
+            <div class="section-title">✅ Backend Integration — Kya kya karna hai</div>
+            <table>
+                <tr>
+                    <th>#</th>
+                    <th>Kaam</th>
+                    <th>File</th>
+                    <th>Priority</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Login form me <code>ngModel</code> binding add karo aur <code>onLogin()</code> method banao</td>
+                    <td><code>login.html</code>, <code>login.ts</code></td>
+                    <td><span class="badge badge-red">High</span></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Login button ka hardcoded Facebook redirect hato, API call lagao</td>
+                    <td><code>login.html</code>, <code>login.ts</code></td>
+                    <td><span class="badge badge-red">High</span></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><code>POST /api/auth/login</code> call karke JWT token localStorage me save karo</td>
+                    <td><code>login.ts</code></td>
+                    <td><span class="badge badge-red">High</span></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><code>onRegister()</code> me Facebook redirect hato, <code>POST /api/auth/register</code> lagao
+                    </td>
+                    <td><code>register.ts</code></td>
+                    <td><span class="badge badge-red">High</span></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Social login buttons (GitHub, Google) ke liye OAuth integration</td>
+                    <td><code>login.html</code></td>
+                    <td><span class="badge badge-yellow">Medium</span></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>Admin key ko backend pe verify karo register ke time</td>
+                    <td><code>register.ts</code></td>
+                    <td><span class="badge badge-yellow">Medium</span></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>Auth guard lagao taaki bina login ke dashboard na khole</td>
+                    <td>New file: <code>auth.guard.ts</code></td>
+                    <td><span class="badge badge-green">Low</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <p style="text-align:center; color:#334155; font-size:0.8rem; margin-top:30px;">
+            CampusEventHub Frontend Summary • Generated for Backend Developer • Angular 17+ Standalone Components
+        </p>
+
+    </div>
+</body>
+
+</html>
