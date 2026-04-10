@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "infosys": {
+    "cwh-todo-list": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -25,7 +25,14 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+
+
+            ],
+            "scripts": [
+              "./node_modules/bootstrap/dist/js/bootstrap.js"
+              
             ]
           },
           "configurations": {
@@ -56,10 +63,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "infosys:build:production"
+              "buildTarget": "cwh-todo-list:build:production"
             },
             "development": {
-              "buildTarget": "infosys:build:development"
+              "buildTarget": "cwh-todo-list:build:development"
             }
           },
           "defaultConfiguration": "development"
